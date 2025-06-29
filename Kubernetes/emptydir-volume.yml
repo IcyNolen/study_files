@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+spec:
+  containers:
+  - name: app
+    image: busybox
+    command: ["/bin/sh", "-c", "sleep 3600"]
+    volumeMounts:
+    - name: mycache
+      mountPath: /cache
+  volumes:
+  - name: mycache
+    emptyDir: {}
+      medium: Memory
+

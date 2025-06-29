@@ -1,0 +1,33 @@
+vim mysqlpod.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dbpod
+spec:
+  containers:
+  - image: mysql:5.7
+    name: mysql
+    volumeMounts:
+    - mountPath: /var/lib/mysql       #inside container
+      name: dbvol                     #container is saying "I want to mount a volume called dbvol at /var/lib/mysql"
+  volumes:
+  - name: dbvol                       #the pod defines that there is a volume named dbvol mounted by container
+    hostPath:
+      path: /data                     #mapping of dbvol must be on this host machine path.
+      type: DirectoryOrCreate
+
+#Imp: The volumeMounts.name must match volumes.name or else Kubernetes won't know which volume the container wants to 
+#     mount, and the Pod will fail to start.
+
+kubectl apply -f mysqlpod.yaml
+kubectl get pod
+kubectl describe pod dbpod
+ls
+clear
+vim mysqlpod.yaml
+kubectl delete pod dbpod
+kubectl apply -f mysqlpod.yaml
+kubectl describe pod dbpod
+clear
+kubectl delete pod dbpod
